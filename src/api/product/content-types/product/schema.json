@@ -17,44 +17,18 @@
       "required": true,
       "unique": true
     },
-    "Stock": {
-      "type": "integer",
-      "required": true,
-      "default": 0,
-      "unique": false,
-      "min": 0
-    },
-    "Cost": {
-      "type": "decimal",
-      "required": true,
-      "default": 0,
-      "min": 0
-    },
-    "Price": {
-      "type": "integer",
-      "default": 0,
-      "required": true,
-      "min": 0
-    },
-    "Estado": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "products_categories": {
+    "products_category": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
       "target": "api::category.category"
     },
-    "brands": {
+    "brand": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
       "target": "api::brand.brand"
     },
-    "stores": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::store.store"
+    "description": {
+      "type": "text"
     }
   }
 }
