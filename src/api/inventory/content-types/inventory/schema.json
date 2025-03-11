@@ -52,7 +52,7 @@
     },
     "status_sale": {
       "type": "boolean",
-      "default": false
+      "default": true
     }
   }
 }

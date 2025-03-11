@@ -75,6 +75,11 @@
       "required": true,
       "default": "Sales",
       "maxLength": 10
+    },
+    "stores": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::store.store"
     }
   }
 }

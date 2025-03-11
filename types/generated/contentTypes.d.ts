@@ -480,6 +480,7 @@ export interface PluginUsersPermissionsUser
         maxLength: 10;
       }> &
       Schema.Attribute.DefaultTo<'Sales'>;
+    stores: Schema.Attribute.Relation<'oneToMany', 'api::store.store'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -554,6 +555,44 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCustomerCustomer extends Struct.CollectionTypeSchema {
+  collectionName: 'customers';
+  info: {
+    singularName: 'customer';
+    pluralName: 'customers';
+    displayName: 'Customers';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    LastName: Schema.Attribute.String;
+    Telefono: Schema.Attribute.String;
+    Age: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 18;
+          max: 100;
+        },
+        number
+      >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::customer.customer'
+    >;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -607,7 +646,7 @@ export interface ApiInventoryInventory extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 10;
       }>;
-    status_sale: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    status_sale: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -620,6 +659,153 @@ export interface ApiInventoryInventory extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::inventory.inventory'
     >;
+  };
+}
+
+export interface ApiInventoryGeneralInventoryGeneral
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'inventory_generals';
+  info: {
+    singularName: 'inventory-general';
+    pluralName: 'inventory-generals';
+    displayName: 'InventoryGeneral';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Schema.Attribute.String;
+    Price: Schema.Attribute.Integer;
+    Cost: Schema.Attribute.Decimal;
+    Stock: Schema.Attribute.Integer;
+    Barcode: Schema.Attribute.String;
+    Status_InventoryGeneral: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    store: Schema.Attribute.Relation<'oneToOne', 'api::store.store'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::inventory-general.inventory-general'
+    >;
+  };
+}
+
+export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
+  collectionName: 'invoices';
+  info: {
+    singularName: 'invoice';
+    pluralName: 'invoices';
+    displayName: 'Invoice';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    NumEinvoice: Schema.Attribute.BigInteger;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    customer: Schema.Attribute.Relation<'oneToOne', 'api::customer.customer'>;
+    DateInvoice: Schema.Attribute.Date;
+    MontoTotal: Schema.Attribute.Decimal;
+    StatusInvoice: Schema.Attribute.Enumeration<
+      ['Completada', 'DevolucionParcial', 'Anulada']
+    >;
+    Comments: Schema.Attribute.Text;
+    store: Schema.Attribute.Relation<'oneToOne', 'api::store.store'>;
+    Subtotal: Schema.Attribute.Decimal;
+    Discount: Schema.Attribute.Decimal;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::invoice.invoice'
+    >;
+  };
+}
+
+export interface ApiInvoiceDetailInvoiceDetail
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'invoice_details';
+  info: {
+    singularName: 'invoice-detail';
+    pluralName: 'invoice-details';
+    displayName: 'Invoice_Detail';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    NumEinvoice: Schema.Attribute.BigInteger;
+    Cantidad: Schema.Attribute.Integer;
+    SalesPrice: Schema.Attribute.Decimal;
+    Discount: Schema.Attribute.Decimal;
+    StatusInvoiceDetails: Schema.Attribute.Enumeration<
+      ['Completada', 'Devolucion']
+    > &
+      Schema.Attribute.DefaultTo<'Completada'>;
+    model: Schema.Attribute.Relation<'oneToOne', 'api::model.model'>;
+    ProducName: Schema.Attribute.String;
+    Cost: Schema.Attribute.Decimal;
+    Rate_Change: Schema.Attribute.Decimal;
+    ProductType: Schema.Attribute.Enumeration<['General', 'Accesorios']>;
+    Color: Schema.Attribute.String;
+    IMEI1: Schema.Attribute.String;
+    IMEI2: Schema.Attribute.String;
+    Capacity: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::invoice-detail.invoice-detail'
+    >;
+  };
+}
+
+export interface ApiModelModel extends Struct.CollectionTypeSchema {
+  collectionName: 'models';
+  info: {
+    singularName: 'model';
+    pluralName: 'models';
+    displayName: 'Models';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    ModelName: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::model.model'>;
   };
 }
 
@@ -656,6 +842,30 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::product.product'
     >;
+  };
+}
+
+export interface ApiRateRate extends Struct.CollectionTypeSchema {
+  collectionName: 'rates';
+  info: {
+    singularName: 'rate';
+    pluralName: 'rates';
+    displayName: 'rate';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Rate_Change: Schema.Attribute.Decimal;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::rate.rate'>;
   };
 }
 
@@ -1061,9 +1271,15 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::brand.brand': ApiBrandBrand;
       'api::category.category': ApiCategoryCategory;
+      'api::customer.customer': ApiCustomerCustomer;
       'api::global.global': ApiGlobalGlobal;
       'api::inventory.inventory': ApiInventoryInventory;
+      'api::inventory-general.inventory-general': ApiInventoryGeneralInventoryGeneral;
+      'api::invoice.invoice': ApiInvoiceInvoice;
+      'api::invoice-detail.invoice-detail': ApiInvoiceDetailInvoiceDetail;
+      'api::model.model': ApiModelModel;
       'api::product.product': ApiProductProduct;
+      'api::rate.rate': ApiRateRate;
       'api::store.store': ApiStoreStore;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
