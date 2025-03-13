@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inventory_generals",
+  "info": {
+    "singularName": "inventory-general",
+    "pluralName": "inventory-generals",
+    "displayName": "InventoryGeneral",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "integer"
+    },
+    "Cost": {
+      "type": "decimal"
+    },
+    "Stock": {
+      "type": "integer"
+    },
+    "Barcode": {
+      "type": "string"
+    },
+    "Status_InventoryGeneral": {
+      "type": "boolean",
+      "default": true
+    },
+    "store": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::store.store"
+    }
+  }
+}

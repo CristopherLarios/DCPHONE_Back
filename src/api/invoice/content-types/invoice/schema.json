@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoices",
+  "info": {
+    "singularName": "invoice",
+    "pluralName": "invoices",
+    "displayName": "Invoice",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "NumEinvoice": {
+      "type": "biginteger"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::customer.customer"
+    },
+    "DateInvoice": {
+      "type": "date"
+    },
+    "MontoTotal": {
+      "type": "decimal"
+    },
+    "StatusInvoice": {
+      "type": "enumeration",
+      "enum": [
+        "Completada",
+        "DevolucionParcial",
+        "Anulada"
+      ]
+    },
+    "Comments": {
+      "type": "text"
+    },
+    "store": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::store.store"
+    },
+    "Subtotal": {
+      "type": "decimal"
+    },
+    "Discount": {
+      "type": "decimal"
+    }
+  }
+}
