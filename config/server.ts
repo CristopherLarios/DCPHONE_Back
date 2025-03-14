@@ -4,4 +4,6 @@ export default ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
+  url: env('PUBLIC_URL', 'dcphone-back-bbhnhxf4h5c2bvfe.eastus2-01.azurewebsites.net'), 
+  proxy: true, 
 });

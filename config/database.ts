@@ -14,21 +14,15 @@
 // });
 
 module.exports = ({ env }) => ({
-  host: env('HOST', '127.0.0.1'), 
-  port: env.int('PORT', 1337),
-  app: {
-    keys: env.array('APP_KEYS', ['your-secret-key']),
-  },
   connection: {
     client: 'mysql',
     connection: {
-      host: env('DATABASE_HOST', 'mysql-db-strapi.mysql.database.azure.com'),
-      port: env.int('DATABASE_PORT', 3306),
-      database: env('DATABASE_NAME', 'strapi_dcphone'),
-      user: env('DATABASE_USER', 'Larios_root'),
-      password: env('DATABASE_PASSWORD', 'HolaMundo17X..'),
+      host: env('DATABASE_HOST'),
+      port: env.int('DATABASE_PORT'),
+      database: env('DATABASE_NAME'),
+      user: env('DATABASE_USER'),
+      password: env('DATABASE_PASSWORD'),
       ssl: { rejectUnauthorized: false }, 
-    },
-    debug: false,
+    }
   },
 });
